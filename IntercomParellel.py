@@ -61,14 +61,12 @@ def main():
 
     direccionHost = input("Introduce direccion del host: ")
 
+    print("\n***  Grabando")
+
     Te = Thread(target=enviar, args=(direccionHost, PORT,))
     Te.daemon = True
     Te.start()
-    
-    input("\n***  Grabando")
-
-    while True:
-        x = 0
+    Te.join()
 
 
 if __name__ == '__main__':
