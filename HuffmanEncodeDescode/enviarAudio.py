@@ -19,21 +19,21 @@ VALORES = 32
 ITERACIONESDWT = 9
 
 #Graba audio 5 segundos y guarda audio.
-def grabarAudio():
+def grabarAudio(segundos):
     p = pyaudio.PyAudio()
     stream = p.open(format=FORMAT,
                 channels=CHANNELS,
                 rate=RATE,
                 input=True,
                 frames_per_buffer=CHUNK)
-    print("* Grabando audio 5 segundos")
+    print("* Grabando audio de",segundos,"segundos")
     frames = []
 
-    for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+    for i in range(0, int(RATE / CHUNK * segundos)):
         data = stream.read(CHUNK)
         frames.append(data)
 
-    print("* Finalizado audio")
+    print("* Audio Finalizado\n")
     stream.stop_stream()
     stream.close()
     p.terminate()
@@ -48,7 +48,13 @@ def grabarAudio():
 #Envia archivo encoded con socket
 def enviarDatos():
     s = socket()
-    s.connect(("localhost", 6030))
+    i=0
+    while i == 0:
+        try:
+            s.connect(("localhost", 6030))
+            i=1
+        except:
+            input ("\nNo se conecta con recibirAudio. \nPulsa enter para intentar de nuevo")
     
     while True:
         f = open("grabacion.acod", "rb")
@@ -72,13 +78,24 @@ def enviarDatos():
     # Cerrar conexión y archivo.
     s.close()
     f.close()
-    print("El archivo ha sido enviado correctamente.")
+    print("\nEl archivo ha sido enviado correctamente.")
+
+def duracionSeg():
+    try:
+        print("Indica el tiempo en segundos de grabacion")
+        segundos = int(input())
+    except ValueError:
+        print("Has introducido mal los segundos. \nUtilizando 5 segundos")
+        segundos = 1024
+    return segundos
 
 #utilizamos tres metodos: primero grabamos audio, despues utilizamos el encode de haffman con el archivo y enviamos el archivo con encode haffman
 if __name__ == "__main__":
-    grabarAudio()
+    segundos = duracionSeg()
+    grabarAudio(segundos)
     time.sleep(1)
     audio_encoder.encodeAudio(WAVE_OUTPUT_FILENAME)
     time.sleep(1)
     enviarDatos()
-    input()
+    while True:
+        x = 0

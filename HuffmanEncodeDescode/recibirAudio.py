@@ -28,7 +28,7 @@ def playFile(audioFileDecoded):
                 output=True)
     data = wf.readframes(CHUNK)
 
-    for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+    while True:
         stream.write(data)
         data = wf.readframes(CHUNK)
 
