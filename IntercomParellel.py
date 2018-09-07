@@ -8,6 +8,8 @@ import socket
 #Libreria threading para usar hilos
 from threading import Thread
 
+
+
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -62,8 +64,11 @@ def main():
     Te = Thread(target=enviar, args=(direccionHost, PORT,))
     Te.daemon = True
     Te.start()
+    
+    input("\n***  Grabando")
 
-    input("Presiona enter para finalizar")
+    while True:
+        x = 0
 
 
 if __name__ == '__main__':
