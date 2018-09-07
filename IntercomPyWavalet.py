@@ -208,8 +208,12 @@ def main():
     Te.daemon = True
     Te.start()
 
-    input("Grabando:")
-    print()
+    time.sleep(0.5)
+
+    input("\n***  Grabando")
+    
+    while True:
+        x = 0
 
 
 if __name__ == '__main__':
